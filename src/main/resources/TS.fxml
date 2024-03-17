@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Box?>
+<?import javafx.scene.shape.Cylinder?>
+
+<Pane fx:id="body" layoutX="-100.0" layoutY="-360.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="0.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane fx:id="baseHCoord" prefHeight="360.0" prefWidth="200.0">
+         <children>
+            <Pane fx:id="baseVCoord" layoutY="60.0" prefHeight="160.0" prefWidth="200.0">
+               <children>
+                  <Box fx:id="turner" depth="120.0" height="120.0" layoutX="100.0" layoutY="100.0" width="80.0" />
+                  <Cylinder fx:id="telescope" drawMode="LINE" height="80.0" layoutX="100.0" layoutY="100.0" radius="30.0" rotate="90.0" translateZ="40.0">
+                     <rotationAxis>
+                        <Point3D x="1.0" />
+                     </rotationAxis>
+                  </Cylinder>
+                  <Cylinder fx:id="eyepiece" height="80.0" layoutX="100.0" layoutY="100.0" radius="15.0" rotate="90.0" translateZ="-40.0">
+                     <rotationAxis>
+                        <Point3D x="1.0" />
+                     </rotationAxis>
+                  </Cylinder>
+                  <Cylinder fx:id="lenz" height="60.0" layoutX="100.0" layoutY="100.0" radius="24.0" rotate="90.0" translateZ="35.0">
+                     <rotationAxis>
+                        <Point3D x="1.0" />
+                     </rotationAxis>
+                  </Cylinder>
+               </children>
+            </Pane>
+            <Box fx:id="columnR" depth="80.0" height="200.0" layoutX="170.0" layoutY="180.0" width="50.0" />
+            <Box fx:id="columnL" depth="80.0" height="200.0" layoutX="30.0" layoutY="180.0" width="50.0" />
+            <Box fx:id="table" depth="160.0" height="80.0" layoutX="100.0" layoutY="300.0" width="200.0" />
+         </children>
+      </Pane>
+      <Box fx:id="base" depth="160.0" height="20.0" layoutX="100.0" layoutY="350.0" width="200.0" />
+   </children>
+   <rotationAxis>
+      <Point3D y="1.0" />
+   </rotationAxis>
+</Pane>
