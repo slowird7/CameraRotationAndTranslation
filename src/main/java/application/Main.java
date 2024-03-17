@@ -19,8 +19,6 @@ import javafx.geometry.Pos;
 
 public class Main extends Application {
 	
-	private final Rotate horizontalAxisRotate = new Rotate(0, Rotate.X_AXIS);
-	private final Rotate verticalAxisRotate = new Rotate(0, Rotate.Y_AXIS);
     private double azimuthRotateAngle = 0.0;
     private double elevationRotateAngle = 0.0;
     private double right = 0.0;
@@ -28,7 +26,8 @@ public class Main extends Application {
     private double forward = -4000.0;
 	private final Rotate azimuthRotate = new Rotate(-azimuthRotateAngle, Rotate.Y_AXIS);
     private final Rotate elevationRotate = new Rotate(-elevationRotateAngle, Rotate.X_AXIS);
-    private final Translate translate = new Translate(right, down, forward);
+	private final Translate translateXY = new Translate(right, down, 0.);
+	private final Translate translateZ = new Translate(0., 0., forward);
 	private TS ts1, ts2;
 
 	@Override
@@ -39,11 +38,10 @@ public class Main extends Application {
 			camera.setFarClip(10000); // The default value is 100.0
 
 			camera.getTransforms().addAll(
-					horizontalAxisRotate,
-					verticalAxisRotate,
+					translateXY,
 					azimuthRotate,
 					elevationRotate,
-					translate
+					translateZ
 					);
 			
 			Group group = new Group();
@@ -51,10 +49,8 @@ public class Main extends Application {
 			subScene.setFill(Color.LIGHTGREY);
 			subScene.setCamera(camera);
 
-			ts1 = new TS();
-			ts2 = new TS(1000., 0., 0.);
-			group.getChildren().add(ts1.node);
-			group.getChildren().add(ts2.node);
+			// オブジェクトを生成・配置
+			makeObjects(group);
 
 
 			VBox controlVBox = new VBox();
@@ -77,11 +73,18 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
+	private void makeObjects(Group group) {
+		ts1 = new TS();
+		ts2 = new TS(1000., 0., 0.);
+		group.getChildren().add(ts1.node);
+		group.getChildren().add(ts2.node);
+	}
+
 	private void setTranslates() {
-		translate.setX(right);
-		translate.setY(down);
-		translate.setZ(forward);
+		translateXY.setX(right);
+		translateXY.setY(down);
+		translateZ.setZ(forward);
 		textTranslateToRight.setText(String.format("%06.1f", right));
 		textTranslateToDown.setText(String.format("%06.1f", down));
 		textTranslateToForward.setText(String.format("%06.1f", forward));
@@ -165,46 +168,9 @@ public class Main extends Application {
 
 		HBox hBox = new HBox();
 		hBox.setSpacing(5);
-		Label label1 = new Label("軸の区別：");
-		label1.setPadding(new Insets(0, 10, 0, 0));
-		label1.getStyleClass().add("bold");
-		Label labelx = new Label("X軸");
-		labelx.setTextFill(Color.RED);
-		Label labely = new Label("Y軸");
-		labely.setTextFill(Color.GREEN);
-		Label labelz = new Label("Z軸");
-		labelz.setTextFill(Color.BLUE);
-		hBox.getChildren().addAll(label1, labelx, labely, labelz);
-		
-		Label labelCameraInitialSetting = new Label("カメラの初期設定：");
-		labelCameraInitialSetting.setPadding(new Insets(5, 0, 0, 0));
-		labelCameraInitialSetting.getStyleClass().add("bold");
-		VBox vBoxRotateAxis = new VBox();
-		vBoxRotateAxis.setPadding(new Insets(0, 10, 10, 10));
-		Label label0 = new Label("camera.getTransforms().addAll(");
-		CheckBox checkBoxHorizontalAxis = new CheckBox("Rotate(-90, X_AXIS);");
-		checkBoxHorizontalAxis.setSelected(false);
-		checkBoxHorizontalAxis.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
-				if (new_val) {
-					horizontalAxisRotate.setAngle(-90);
-				} else {
-					horizontalAxisRotate.setAngle(0);
-				}
-		});
-		CheckBox checkBoxVerticalAxis = new CheckBox("Rotate(-90, Y_AXIS);");
-		checkBoxVerticalAxis.setSelected(false);
-		checkBoxVerticalAxis.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
-			if (new_val) {
-				verticalAxisRotate.setAngle(-90);
-			} else {
-				verticalAxisRotate.setAngle(0);
-			}
-		});
-		
-		vBoxRotateAxis.getChildren().addAll(label0, checkBoxHorizontalAxis, checkBoxVerticalAxis);
-		
+
 		VBox vBoxTranslate = new VBox();
-		
+
 		Label labelCameraPosition = new Label("カメラの位置");
 		labelCameraPosition.getStyleClass().add("bold");
 		Label labelCameraToRight = new Label("右へ：　");
@@ -321,7 +287,7 @@ public class Main extends Application {
 
 		vBoxRotate.getChildren().addAll(label2, hBox1, sliderAzimuth, hBox2, sliderElevation, hBox3, sliderTSAzimuth, hBox4, sliderTSElevation);
 		
-		vBox.getChildren().addAll(hBox, labelCameraInitialSetting, vBoxRotateAxis, vBoxTranslate, vBoxRotate/*, imageView*/);
+		vBox.getChildren().addAll(hBox, vBoxTranslate, vBoxRotate);
 	}
 	
 	public static void main(String[] args) {
